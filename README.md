@@ -16,3 +16,7 @@ En este repositorio se encuentran las carpetas donde podrán subir los dump de l
 
 Nombre y Apellido: Giuseppe Cavallieri
 Correo: giuseppe.cavallieri@usach.cl
+
+## Backup PostgreSQL
+
+Restaurar el backup usando la herramienta 'Restore' de pgAdmin.
