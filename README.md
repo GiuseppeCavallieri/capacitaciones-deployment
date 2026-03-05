@@ -20,3 +20,7 @@ Correo: giuseppe.cavallieri@usach.cl
 ## Backup PostgreSQL
 
 Restaurar el backup usando la herramienta 'Restore' de pgAdmin.
+
+## Backup MongoDB
+
+Restaurar el backup inyectando los JSON en la base de datos
