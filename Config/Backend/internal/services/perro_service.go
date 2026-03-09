@@ -52,8 +52,13 @@ func (s *PerroService) GetByID(id int) (models.Perro, error) {
 	return s.perroRepo.GetByID(id)
 }
 
-func (s *PerroService) Create(perro models.Perro) error {
-	return s.perroRepo.Create(perro)
+func (s *PerroService) Create(perro models.Perro) (models.Perro, error) {
+	maxID, err := s.perroRepo.GetMaxID()
+	if err != nil {
+		maxID = 0
+	}
+	perro.ID = maxID + 1
+	return perro, s.perroRepo.Create(perro)
 }
 
 func (s *PerroService) Update(id int, perro models.Perro) error {

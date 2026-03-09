@@ -6,6 +6,7 @@ import (
 	"veterinaria/backend/internal/config"
 	"veterinaria/backend/internal/controllers"
 	"veterinaria/backend/internal/database"
+	"veterinaria/backend/internal/middleware"
 	"veterinaria/backend/internal/repository"
 	"veterinaria/backend/internal/routes"
 	"veterinaria/backend/internal/services"
@@ -41,6 +42,7 @@ func main() {
 
 	// Router
 	router := gin.Default()
+	router.Use(middleware.CORS())
 	routes.SetupRoutes(router, duenoCtrl, perroCtrl, vacunaCtrl)
 
 	log.Println("Servidor corriendo en", cfg.Port)

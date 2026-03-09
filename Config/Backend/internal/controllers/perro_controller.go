@@ -42,11 +42,12 @@ func (c *PerroController) Create(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := c.svc.Create(perro); err != nil {
+	created, err := c.svc.Create(perro)
+	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, perro)
+	ctx.JSON(http.StatusCreated, created)
 }
 
 func (c *PerroController) Update(ctx *gin.Context) {

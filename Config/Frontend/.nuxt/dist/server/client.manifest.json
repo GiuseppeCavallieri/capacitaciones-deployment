@@ -1,0 +1,18 @@
+{
+  "@vite/client": {
+    "prefetch": true,
+    "isEntry": true,
+    "file": "@vite/client",
+    "css": [],
+    "module": true,
+    "resourceType": "script"
+  },
+  "C:/Users/Mikel/OneDrive/Escritorio/Repositorios/citi/capacitaciones-deployment/Config/Frontend/node_modules/nuxt/dist/app/entry.js": {
+    "resourceType": "script",
+    "module": true,
+    "prefetch": true,
+    "preload": true,
+    "isEntry": true,
+    "file": "C:/Users/Mikel/OneDrive/Escritorio/Repositorios/citi/capacitaciones-deployment/Config/Frontend/node_modules/nuxt/dist/app/entry.js"
+  }
+}

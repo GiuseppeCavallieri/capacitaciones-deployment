@@ -16,7 +16,7 @@ func NewPerroRepo(db *mgo.Database) *PerroRepository {
 }
 
 func (r *PerroRepository) GetAll() ([]models.Perro, error) {
-	var perros []models.Perro
+	perros := make([]models.Perro, 0)
 	err := r.col.Find(nil).All(&perros)
 	return perros, err
 }
@@ -29,6 +29,15 @@ func (r *PerroRepository) GetByID(id int) (models.Perro, error) {
 
 func (r *PerroRepository) Create(perro models.Perro) error {
 	return r.col.Insert(perro)
+}
+
+func (r *PerroRepository) GetMaxID() (int, error) {
+	var perro models.Perro
+	err := r.col.Find(nil).Sort("-_id").One(&perro)
+	if err != nil {
+		return 0, err
+	}
+	return perro.ID, nil
 }
 
 func (r *PerroRepository) Update(id int, perro models.Perro) error {

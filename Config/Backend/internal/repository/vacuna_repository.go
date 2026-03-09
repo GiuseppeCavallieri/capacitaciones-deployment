@@ -16,7 +16,7 @@ func NewVacunaRepo(db *mgo.Database) *VacunaRepository {
 }
 
 func (r *VacunaRepository) GetAll() ([]models.Vacuna, error) {
-	var vacunas []models.Vacuna
+	vacunas := make([]models.Vacuna, 0)
 	err := r.col.Find(nil).All(&vacunas)
 	return vacunas, err
 }
@@ -28,7 +28,7 @@ func (r *VacunaRepository) GetByID(id int) (models.Vacuna, error) {
 }
 
 func (r *VacunaRepository) GetByPerroID(idPerro int) ([]models.Vacuna, error) {
-	var vacunas []models.Vacuna
+	vacunas := make([]models.Vacuna, 0)
 	err := r.col.Find(bson.M{"id_perro": idPerro}).All(&vacunas)
 	return vacunas, err
 }
