@@ -42,11 +42,12 @@ func (c *VacunaController) Create(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := c.svc.Create(vacuna); err != nil {
+	created, err := c.svc.Create(vacuna)
+	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, vacuna)
+	ctx.JSON(http.StatusCreated, created)
 }
 
 func (c *VacunaController) Update(ctx *gin.Context) {

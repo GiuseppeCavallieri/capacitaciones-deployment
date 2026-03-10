@@ -17,13 +17,11 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 
-	session, err := database.ConnectDB(cfg)
+	db, err := database.ConnectDB(cfg)
 	if err != nil {
 		log.Fatal("Error connecting to database:", err)
 	}
-	defer session.Close()
-
-	db := session.DB(cfg.DBName)
+	defer db.Close()
 
 	// Repositories
 	duenoRepo := repository.NewDuenoRepo(db)

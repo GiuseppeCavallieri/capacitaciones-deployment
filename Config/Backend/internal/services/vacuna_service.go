@@ -21,7 +21,7 @@ func (s *VacunaService) GetByID(id int) (models.Vacuna, error) {
 	return s.repo.GetByID(id)
 }
 
-func (s *VacunaService) Create(vacuna models.Vacuna) error {
+func (s *VacunaService) Create(vacuna models.Vacuna) (models.Vacuna, error) {
 	return s.repo.Create(vacuna)
 }
 

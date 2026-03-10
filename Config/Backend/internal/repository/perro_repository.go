@@ -1,49 +1,58 @@
 package repository
 
 import (
+	"database/sql"
 	"veterinaria/backend/internal/models"
-
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
 )
 
 type PerroRepository struct {
-	col *mgo.Collection
+	db *sql.DB
 }
 
-func NewPerroRepo(db *mgo.Database) *PerroRepository {
-	return &PerroRepository{col: db.C("Perros")}
+func NewPerroRepo(db *sql.DB) *PerroRepository {
+	return &PerroRepository{db: db}
 }
 
 func (r *PerroRepository) GetAll() ([]models.Perro, error) {
+	rows, err := r.db.Query("SELECT id, nombre, raza, color, edad, id_dueno FROM perros")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
 	perros := make([]models.Perro, 0)
-	err := r.col.Find(nil).All(&perros)
-	return perros, err
+	for rows.Next() {
+		var p models.Perro
+		if err := rows.Scan(&p.ID, &p.Nombre, &p.Raza, &p.Color, &p.Edad, &p.IDDueno); err != nil {
+			return nil, err
+		}
+		perros = append(perros, p)
+	}
+	return perros, rows.Err()
 }
 
 func (r *PerroRepository) GetByID(id int) (models.Perro, error) {
-	var perro models.Perro
-	err := r.col.FindId(id).One(&perro)
-	return perro, err
+	var p models.Perro
+	err := r.db.QueryRow("SELECT id, nombre, raza, color, edad, id_dueno FROM perros WHERE id=$1", id).Scan(&p.ID, &p.Nombre, &p.Raza, &p.Color, &p.Edad, &p.IDDueno)
+	return p, err
 }
 
-func (r *PerroRepository) Create(perro models.Perro) error {
-	return r.col.Insert(perro)
-}
-
-func (r *PerroRepository) GetMaxID() (int, error) {
-	var perro models.Perro
-	err := r.col.Find(nil).Sort("-_id").One(&perro)
+func (r *PerroRepository) Create(perro models.Perro) (models.Perro, error) {
+	var id int
+	err := r.db.QueryRow("INSERT INTO perros (nombre, raza, color, edad, id_dueno) VALUES ($1, $2, $3, $4, $5) RETURNING id", perro.Nombre, perro.Raza, perro.Color, perro.Edad, perro.IDDueno).Scan(&id)
 	if err != nil {
-		return 0, err
+		return perro, err
 	}
-	return perro.ID, nil
+	perro.ID = id
+	return perro, nil
 }
 
 func (r *PerroRepository) Update(id int, perro models.Perro) error {
-	return r.col.UpdateId(id, bson.M{"$set": perro})
+	_, err := r.db.Exec("UPDATE perros SET nombre=$1, raza=$2, color=$3, edad=$4, id_dueno=$5 WHERE id=$6", perro.Nombre, perro.Raza, perro.Color, perro.Edad, perro.IDDueno, id)
+	return err
 }
 
 func (r *PerroRepository) Delete(id int) error {
-	return r.col.RemoveId(id)
+	_, err := r.db.Exec("DELETE FROM perros WHERE id=$1", id)
+	return err
 }

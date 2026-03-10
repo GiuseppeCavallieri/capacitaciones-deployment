@@ -42,11 +42,12 @@ func (c *DuenoController) Create(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := c.svc.Create(dueno); err != nil {
+	created, err := c.svc.Create(dueno)
+	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, dueno)
+	ctx.JSON(http.StatusCreated, created)
 }
 
 func (c *DuenoController) Update(ctx *gin.Context) {

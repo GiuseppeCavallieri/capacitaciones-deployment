@@ -21,7 +21,7 @@ func (s *DuenoService) GetByID(id int) (models.Dueno, error) {
 	return s.repo.GetByID(id)
 }
 
-func (s *DuenoService) Create(dueno models.Dueno) error {
+func (s *DuenoService) Create(dueno models.Dueno) (models.Dueno, error) {
 	return s.repo.Create(dueno)
 }
 

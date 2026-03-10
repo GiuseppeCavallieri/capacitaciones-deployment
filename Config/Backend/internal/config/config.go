@@ -7,9 +7,8 @@ import (
 )
 
 type Config struct {
-	MongoURI string
-	Port     string
-	DBName   string
+	PostgresDSN string
+	Port        string
 }
 
 func LoadConfig() *Config {
@@ -17,8 +16,7 @@ func LoadConfig() *Config {
 	godotenv.Load()
 
 	return &Config{
-		MongoURI: os.Getenv("MONGODB_URI"),
-		Port:     os.Getenv("PORT"),
-		DBName:   os.Getenv("DBNAME"),
+		PostgresDSN: os.Getenv("POSTGRES_DSN"),
+		Port:        os.Getenv("PORT"),
 	}
 }
